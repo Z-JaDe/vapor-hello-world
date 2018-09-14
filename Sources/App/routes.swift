@@ -6,7 +6,15 @@ public func routes(_ router: Router) throws {
     router.get("hello") { req in
         return "Hello, world!"
     }
-
+    router.group("test") { (router) in
+        router.get("ads",PathComponent.parameter("name")) { (req) -> String in
+            guard let name = req.parameters.values.first?.value else {
+                throw Abort.redirect(to: "https://vapor.codes")
+            }
+            return name
+        }
+    }
+    
     // Example of configuring a controller
     let todoController = TodoController()
     router.get("todos", use: todoController.index)
